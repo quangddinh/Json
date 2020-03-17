@@ -16,7 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
-    String mRUL="https://khoapham.vn/KhoaPhamTraining/json/tien/demo2.json";
+    String mRUL="https://khoapham.vn/KhoaPhamTraining/json/tien/demo3.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +40,27 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
             // format du lieu về dạng json object, convert dạng string s về object json
+
             try {
-                JSONObject jsonObject = new JSONObject(s);
-                JSONArray jsonArrayDanhsach = jsonObject.getJSONArray("danhsach");
-                for (int i = 0 ; i < jsonArrayDanhsach.length() ; i++)
-                {
-                    JSONObject jsonObjectKhoahoc = jsonArrayDanhsach.getJSONObject(i);
-                    String khoahoc = jsonObjectKhoahoc.getString("khoahoc");
-                    Log.d("AAA",khoahoc);
-                }
+
+                JSONObject jsonObjectlanguage = new JSONObject(s);
+                JSONObject jsonObjecten = jsonObjectlanguage.getJSONObject("language");
+                String en = jsonObjecten.getString("en");
+                Log.d("BBB",en);
+                JSONObject jsonObjectvn = jsonObjectlanguage.getJSONObject("language");
+                String vn = jsonObjectvn.getString("vn");
+                Log.d("BBB",vn);
+
+                JSONObject jsonObjectname = jsonObjectvn.getJSONObject("vn");
+                String name = jsonObjectname.getString("name");
+                Log.d("BBB",name);
+                JSONObject jsonObjectaddress = jsonObjecten.getJSONObject("en");
+                String address = jsonObjectaddress.getString("address");
+                Log.d("BBB",address);
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
