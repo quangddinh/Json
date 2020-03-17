@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -33,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("BBB",s);
+            // format du lieu về dạng json object, convert dạng string s về object json
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                String website = jsonObject.getString("website");
+                Log.d("BBB", website);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
     private String docNoiDung_Tu_URL(String theUrl){
