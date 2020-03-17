@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,22 +16,25 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
-    String mRUL="https://khoapham.vn/KhoaPhamTraining/json/tien/demo1.json";
+    String mRUL="https://khoapham.vn/KhoaPhamTraining/json/tien/demo2.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         new XuLyDuLieuJson().execute(mRUL);
     }
 
-    class XuLyDuLieuJson extends AsyncTask<String,Void,String>{
-// 3 đầu vào của Async là đường dẫn kiểu String, cập nhật lấy kqtra về nên Void, rồi kq trả về String
-//          Alt Enter implement doinbackground
+    class XuLyDuLieuJson extends AsyncTask<String,Void,String>
+    {
+    // 3 đầu vào của Async là đường dẫn kiểu String, cập nhật lấy kqtra về nên Void, rồi kq trả về String
+    // Alt Enter implement doinbackground
         @Override
         protected String doInBackground(String... strings) {
             return docNoiDung_Tu_URL(strings[0]);
             // người dùng truyền đường dẫn vào nên truyền string vô
         }
+
         // chứ năng onPost đọc dl, trả về string
         // trả về chuỗi s
         @Override
@@ -39,14 +43,21 @@ public class MainActivity extends AppCompatActivity {
             // format du lieu về dạng json object, convert dạng string s về object json
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                String website = jsonObject.getString("website");
-                Log.d("BBB", website);
+                JSONArray jsonArrayDanhsach = jsonObject.getJSONArray("danhsach");
+                for (int i = 0 ; i < jsonArrayDanhsach.length() ; i++)
+                {
+                    JSONObject jsonObjectKhoahoc = jsonArrayDanhsach.getJSONObject(i);
+                    String khoahoc = jsonObjectKhoahoc.getString("khoahoc");
+                    Log.d("AAA",khoahoc);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-    private String docNoiDung_Tu_URL(String theUrl){
+
+    private String docNoiDung_Tu_URL(String theUrl)
+    {
         StringBuilder content = new StringBuilder();
         try    {
             // create a url object
